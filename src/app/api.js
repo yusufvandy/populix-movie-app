@@ -8,59 +8,44 @@ import env from '../../env.config'
 
 const { BASE_URL } = env;
 
-export const API_URL = `${BASE_URL}/api/`
+let headers = { 'Content-Type': 'application/json' }
+const token = AsyncStorage.getItem('access_token')
+if (token) headers = { ...headers, 'Authorization': `Bearer ${token}` }
 
-export const getApi = async (url) => {
-    const token = await AsyncStorage.getItem('TOKEN')
-    let headers = { 'Content-Type': 'application/json' }
+const instance = axios.create({ baseUrl: BASE_URL, headers: headers });
+instance.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response.status === 401 || error.response.status === 403) {
+            Alert.alert(
+                'Session Expired',
+                'Please login to continue',
+                [
+                    { text: 'OK', onPress: () => (store.dispatch(logout()), RootNavigation('HOME_SCREEN')) },
+                ],
+                { cancelable: false }
+            )
+            return
+        }
+        return error
+    });
 
-    if (token) {
-        headers = { ...headers, 'Authorization': `Bearer ${token}` }
-    } else {
-        headers = { ...headers, 'key': `guest` }
-    }
-
-    console.log('GET/', url);
-
-    const instance = axios.create({ baseUrl: API_URL, headers: headers });
-
-    instance.interceptors.response.use(
-        response => response,
-        error => {
-            if (error.response.status === 401 || error.response.status === 403) {
-                Alert.alert(
-                    'Session Expired',
-                    'Please login to continue',
-                    [
-                        { text: 'OK', onPress: () => (store.dispatch(logout()), RootNavigation('ONBOARDING_SCREEN')) },
-                    ],
-                    { cancelable: false }
-                )
-                return
-            }
-            return error
-        });
-    return instance.get(API_URL + url, { headers })
+export const getApi = async (version, url) => {
+    console.log('GET/', BASE_URL + `${version}/` + url);
+    return instance.get(BASE_URL + `${version}/` + url, { headers })
 }
 
-export const postApi = async (url, payload) => {
-    const token = await AsyncStorage.getItem('TOKEN')
-    let headers = { 'Content-Type': 'application/json' }
-
-    if (token) {
-        headers = { ...headers, 'Authorization': `Bearer ${token}` }
-    }
-
-    console.log('POST/', url);
-
-    return axios.post(API_URL + url,
-        payload,
-        { headers }
-    )
+export const postApi = async (version, url, payload) => {
+    console.log('POST/', BASE_URL + `${version}/` + url);
+    return instance.post(BASE_URL + version + url, payload, { headers })
+    // return axios.post(BASE_URL + url,
+    //     payload,
+    //     { headers }
+    // )
 }
 
 export const postUploadApi = async (url, payload) => {
-    const token = await AsyncStorage.getItem('TOKEN')
+    const token = await AsyncStorage.getItem('access_token')
     let headers = { 'Content-Type': 'multipart/form-data' }
 
     if (token) {
@@ -69,18 +54,18 @@ export const postUploadApi = async (url, payload) => {
 
     console.log('FORMDATA/', url);
 
-    return axios.post(API_URL + url,
+    return axios.post(BASE_URL + url,
         payload,
         { headers }
     )
 }
 
 export const putApi = async (url, payload) => {
-    const token = await AsyncStorage.getItem('TOKEN')
+    const token = await AsyncStorage.getItem('access_token')
 
     console.log('PUT/', url);
 
-    return axios.put(API_URL + url,
+    return axios.put(BASE_URL + url,
         payload,
         {
             headers: {
@@ -92,11 +77,11 @@ export const putApi = async (url, payload) => {
 }
 
 export const deleteApi = async (url) => {
-    const token = await AsyncStorage.getItem('TOKEN')
+    const token = await AsyncStorage.getItem('access_token')
 
     console.log('DELETE/', url);
 
-    return axios.delete(API_URL + url,
+    return axios.delete(BASE_URL + url,
         {
             headers: {
                 'Content-Type': 'application/json',

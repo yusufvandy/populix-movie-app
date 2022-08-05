@@ -1,10 +1,12 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Home as HOME_SCREEN } from '@screens/home';
-import { Account as ACCOUNT_SCREEN } from '@screens/account';
-import { Find as FIND_SCREEN } from '@screens/find';
+import { Recommendation as RECOMMENDATION_SCREEN } from '@screens/recommendation';
+import { Favorite as FAVORITE_SCREEN } from '@screens/favorite';
+import { Watchlist as WATCHLIST_SCREEN } from '@screens/watchlist';
+import { Rate as RATE_SCREEN } from '@screens/rate';
 import { Regular } from './Text';
 
 export default Navbar = () => {
@@ -39,21 +41,39 @@ export default Navbar = () => {
                     ),
                 }} />
             <Tab.Screen
-                name='FIND_SCREEN_TAB'
-                component={FIND_SCREEN}
+                name='RECOMMENDATION_SCREEN_TAB'
+                component={RECOMMENDATION_SCREEN}
                 options={{
-                    tabBarLabel: 'Find',
+                    tabBarLabel: 'Recommendation',
                     tabBarIcon: ({ focused, color, size }) => (
-                        <Ionicons name={focused ? "search" : "search"} color={color} size={size} />
+                        <MaterialCommunityIcons name={focused ? "comment-check" : "comment-check-outline"} color={color} size={size} />
                     ),
                 }} />
             <Tab.Screen
-                name='ACCOUNT_SCREEN_TAB'
-                component={ACCOUNT_SCREEN}
+                name='FAVORITE_SCREEN_TAB'
+                component={FAVORITE_SCREEN}
                 options={{
-                    tabBarLabel: 'Account',
+                    tabBarLabel: 'Favorite',
                     tabBarIcon: ({ focused, color, size }) => (
-                        <MaterialCommunityIcons name={focused ? "account-circle" : "account-circle-outline"} color={color} size={size} />
+                        <AntDesign name={focused ? "heart" : "hearto"} color={color} size={size} />
+                    ),
+                }} />
+            <Tab.Screen
+                name='WATCHLIST_SCREEN_TAB'
+                component={WATCHLIST_SCREEN}
+                options={{
+                    tabBarLabel: 'Watchlist',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <MaterialIcons name={focused ? "bookmark" : "bookmark-outline"} color={color} size={size} />
+                    ),
+                }} />
+            <Tab.Screen
+                name='RATE_SCREEN_TAB'
+                component={RATE_SCREEN}
+                options={{
+                    tabBarLabel: 'Rate',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <AntDesign name={focused ? "star" : "staro"} color={color} size={size} />
                     ),
                 }} />
         </Tab.Navigator>

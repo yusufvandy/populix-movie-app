@@ -54,7 +54,7 @@ const Routes = () => {
 const App = () => {
   return (
     <Provider store={store}>
-      <CustomStatusBar backgroundColor="#032541" barStyle="light-content" />
+      <CustomStatusBar backgroundColor="#1f1d2b" barStyle="light-content" />
       <Routes />
     </Provider>
   );

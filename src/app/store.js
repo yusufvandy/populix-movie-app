@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import movieSlicer from '@features/movieSlicer';
 import accountSlicer from '@features/accountSlicer';
+import movieSlicer from '@features/movieSlicer';
+import tvSlicer from '@features/tvSlicer';
 
 export const store = configureStore({
   reducer: {
-    movie: movieSlicer,
     account: accountSlicer,
+    movie: movieSlicer,
+    tv: tvSlicer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
 });

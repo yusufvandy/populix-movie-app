@@ -10,6 +10,7 @@
                     "./"
                 ],
                 "alias": {
+                    "@root": "./",
                     "@components": "./src/components",
                     "@screens": "./src/screens",
                     "@app": "./src/app",
