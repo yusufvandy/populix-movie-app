@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "populix-movie-app",
+    "slug": "populix-movie-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
