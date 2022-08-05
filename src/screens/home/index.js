@@ -31,8 +31,6 @@ export const Home = () => {
         }
     }, [])
 
-    console.log(popularTV)
-
     return (
         <View style={{ flex: 1, paddingHorizontal: 25, paddingVertical: 15, backgroundColor: '#1f1d2b' }}>
             <ProfileComponent token={token} loading={loading} />

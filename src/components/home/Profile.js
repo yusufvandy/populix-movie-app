@@ -1,7 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Regular, Semibold, Bold } from '@components/Text';
 import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
+import { TMDB_LOGO_URL } from "@env"
 
 const Skeleton = () => (
     <View style={{ flexDirection: 'row', paddingVertical: 5, alignItems: 'center' }}>
@@ -18,7 +19,10 @@ const Skeleton = () => (
 export default ProfileComponent = ({ loading, token }) => {
     if (loading) return <Skeleton />
     if (!token) return (
-        <Regular>not loggedn</Regular>
+        <View>
+            {/* <Image style={{ width: '100%', height: 50 }} source={{ uri: `./assets/splash.png` }} /> */}
+            <Regular>notlogin</Regular>
+        </View>
     )
     return (
         <Regular>loggedin</Regular>

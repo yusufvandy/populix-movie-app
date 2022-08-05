@@ -4,9 +4,7 @@ import { navigate as RootNavigation } from '../../App'
 import { store } from './store'
 import { logout } from '@features/accountSlicer'
 import { Alert } from 'react-native'
-import env from '../../env.config'
-
-const { BASE_URL } = env;
+import { BASE_URL } from "@env"
 
 let headers = { 'Content-Type': 'application/json' }
 const token = AsyncStorage.getItem('access_token')

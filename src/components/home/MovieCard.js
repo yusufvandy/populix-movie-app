@@ -4,7 +4,7 @@ import { Regular, Semibold, Bold } from '@components/Text';
 import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
-import env from '@root/env.config';
+import { IMG_URL } from "@env"
 
 const Skeleton = () => (
     <View style={{ paddingVertical: 10 }}>
@@ -32,7 +32,7 @@ const Skeleton = () => (
 
 const renderItem = ({ item }) => (
     <TouchableOpacity key={item.id} style={{ width: 150, marginRight: 15 }}>
-        <Image style={{ width: '100%', borderRadius: 5, height: 220 }} source={{ uri: `${env.IMG_URL}${item.poster_path}` }} />
+        <Image style={{ width: '100%', borderRadius: 5, height: 220 }} source={{ uri: `${IMG_URL}${item.poster_path}` }} />
         <View style={{ position: 'absolute', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 2, top: 5, right: 5 }}>
             <AntDesign name="star" color="#f9bd2a" size={10} />
             <Regular size={12} color="#f9bd2a" style={{ marginLeft: 5 }}>{item.vote_average}</Regular>

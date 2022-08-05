@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Alert } from 'react-native';
 import { postApi, getApi } from '@app/api';
-import env from '../../env.config'
-const { API_KEY } = env;
+import { API_KEY } from "@env"
 
 const initialState = {
     loading: false,
