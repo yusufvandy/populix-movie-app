@@ -7,7 +7,8 @@ const initialState = {
     loading: false,
     upcoming: [],
     trending: [],
-    popular: []
+    popular: [],
+    detail: null
 };
 
 export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
@@ -31,6 +32,15 @@ export const getTrending = createAsyncThunk('MOVIE_GET_TRENDING', async () => {
 export const getPopular = createAsyncThunk('MOVIE_GET_POPULAR', async () => {
     try {
         const res = await getApi(3, `movie/popular?api_key=${API_KEY}`);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const getMovieDetail = createAsyncThunk('MOVIE_GET_DETAIL', async (id) => {
+    try {
+        const res = await getApi(3, `movie/${id}?api_key=${API_KEY}&language=en-US`);
         return res.data;
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
@@ -76,6 +86,17 @@ export const movieSlicer = createSlice({
                 state.popular = action.payload.results;
             }),
             builder.addCase(getPopular.rejected, (state, action) => {
+                state.loading = false;
+                state.popular = null;
+            }),
+            builder.addCase(getMovieDetail.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getMovieDetail.fulfilled, (state, action) => {
+                state.loading = false;
+                state.detail = action.payload;
+            }),
+            builder.addCase(getMovieDetail.rejected, (state, action) => {
                 state.loading = false;
                 state.popular = null;
             })

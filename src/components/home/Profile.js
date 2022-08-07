@@ -50,10 +50,10 @@ export default ProfileComponent = ({ loading }) => {
     const [showWebView, setShowWebView] = React.useState(false)
     const [token, setToken] = React.useState({ access_token: null, request_token: null })
     const dispatch = useDispatch();
-    const { request_token, access_token } = useSelector(state => state.account);
+    const { request_token } = useSelector(state => state.account);
 
     const handlePostRequestToken = () => {
-        setShowWebView(true)
+        !token.access_token && setShowWebView(true)
         !token.request_token && dispatch(postRequestToken())
     }
 
@@ -70,8 +70,7 @@ export default ProfileComponent = ({ loading }) => {
             const ls_request_token = await AsyncStorage.getItem('request_token')
             setToken({ access_token: ls_access_token, request_token: ls_request_token })
         })();
-        console.log(token)
-    }, [request_token, access_token])
+    }, [request_token])
 
     if (loading) return <Skeleton />
     if (showWebView) return (<VerificationView
@@ -100,7 +99,7 @@ export default ProfileComponent = ({ loading }) => {
                 <View style={{ flexDirection: 'row', marginRight: 15, alignItems: 'center', justifyContent: 'center', width: 50, height: 50, backgroundColor: '#0cc1cf', borderRadius: 100 }}><Bold size={20} color="white">YU</Bold></View>
                 <View>
                     <Bold size={18}>Welcome back, Yusufvandy!</Bold>
-                    <Regular>Please <Regular color="#0cc1cf">login</Regular> to continue.</Regular>
+                    <Regular size={12}>Member since August 2022</Regular>
                 </View>
             </TouchableOpacity>
         </View>

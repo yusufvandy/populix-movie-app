@@ -7,6 +7,8 @@ import { renderRoutes } from './routes'
 import CustomStatusBar from '@components/CustomStatusBar';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // navigation helpers
 export const navigationRef = React.createRef();
@@ -19,6 +21,17 @@ const Routes = () => {
   const routeNameRef = React.useRef();
   // initiate custom font
   const [appIsReady, setAppIsReady] = React.useState(false);
+  const [accessToken, setAccessToken] = React.useState(null);
+  const { request_token } = useSelector(state => state.account);
+
+  // trigger reactive token
+  React.useEffect(() => {
+    (async () => {
+      const ls_access_token = await AsyncStorage.getItem('access_token')
+      setAccessToken(ls_access_token)
+    })();
+  }, [request_token])
+
   React.useEffect(() => {
     (async () => {
       try {
@@ -46,7 +59,7 @@ const Routes = () => {
         routeNameRef.current = navigationRef.current.getCurrentRoute().name;
       }}
     >
-      <Stack.Navigator>{renderRoutes()}</Stack.Navigator>
+      <Stack.Navigator>{renderRoutes(accessToken)}</Stack.Navigator>
     </NavigationContainer>
   );
 };

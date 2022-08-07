@@ -30,24 +30,24 @@ const Skeleton = () => (
     </View >
 )
 
-const renderItem = ({ item }) => (
-    <TouchableOpacity key={item.id} style={{ width: 150, marginRight: 15 }}>
+const renderItem = ({ item }, navigation) => (
+    <TouchableOpacity onPress={() => navigation.navigate('MOVIE_DETAIL_SCREEN', { id: item.id, title: item.title ? item.title : item.name })} key={item.id} style={{ width: 150, marginRight: 15, marginBottom: 15 }}>
         <Image style={{ width: '100%', borderRadius: 5, height: 220 }} source={{ uri: `${IMG_URL}${item.poster_path}` }} />
         <View style={{ position: 'absolute', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 2, top: 5, right: 5 }}>
             <AntDesign name="star" color="#f9bd2a" size={10} />
             <Regular color="#f9bd2a" style={{ marginLeft: 5 }}>{item.vote_average}</Regular>
         </View>
-        <Bold style={{ marginTop: 10, marginBottom: 3 }}>{item.title ? item.title : item.name}</Bold>
+        <Bold style={{ marginTop: 10, marginBottom: 3, maxHeight: 40 }}>{item.title ? item.title : item.name}</Bold>
         <Regular size={12} color="#888">{moment(item.release_date).format('DD MMM YYYY')}</Regular>
     </TouchableOpacity>
 )
 
-export default MovieCardComponent = ({ loading, data, label }) => {
+export default MovieCardComponent = ({ loading, data, label, navigation }) => {
     if (loading) return <Skeleton />
     if (!data || !data.length) return null
     return (
         <>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <Bold size={20}>{label}</Bold>
                 <TouchableOpacity>
                     <Regular color="#0cc1cf">View All</Regular>
@@ -59,7 +59,7 @@ export default MovieCardComponent = ({ loading, data, label }) => {
                     showsHorizontalScrollIndicator={false}
                     data={data}
                     keyExtractor={item => item?.id}
-                    renderItem={renderItem}
+                    renderItem={(item) => renderItem(item, navigation)}
                 />
             </View>
         </>
