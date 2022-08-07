@@ -35,9 +35,9 @@ const renderItem = ({ item }) => (
         <Image style={{ width: '100%', borderRadius: 5, height: 220 }} source={{ uri: `${IMG_URL}${item.poster_path}` }} />
         <View style={{ position: 'absolute', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 2, top: 5, right: 5 }}>
             <AntDesign name="star" color="#f9bd2a" size={10} />
-            <Regular size={12} color="#f9bd2a" style={{ marginLeft: 5 }}>{item.vote_average}</Regular>
+            <Regular color="#f9bd2a" style={{ marginLeft: 5 }}>{item.vote_average}</Regular>
         </View>
-        <Bold style={{ marginTop: 10, marginBottom: 3 }}>{item.title}</Bold>
+        <Bold style={{ marginTop: 10, marginBottom: 3 }}>{item.title ? item.title : item.name}</Bold>
         <Regular size={12} color="#888">{moment(item.release_date).format('DD MMM YYYY')}</Regular>
     </TouchableOpacity>
 )

@@ -2,6 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity, TextInput } from 'react-native';
 import { Regular, Semibold, Bold } from '@components/Text';
 import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
+import { useDispatch } from 'react-redux';
+import { logout } from '@features/accountSlicer';
 
 const Skeleton = () => (
     <View style={{ flexDirection: 'row', paddingVertical: 5, alignItems: 'center' }}>
@@ -16,6 +18,7 @@ const Skeleton = () => (
 
 export default SearchComponent = ({ loading }) => {
     if (loading) return <Skeleton />
+    const dispatch = useDispatch();
     return (
         <View style={{ flexDirection: 'row', paddingVertical: 15, alignItems: 'center', justifyContent: 'space-between' }}>
             <TextInput
@@ -23,7 +26,7 @@ export default SearchComponent = ({ loading }) => {
                 placeholder="Find movie, TV or people..."
                 placeholderTextColor={"#888"}
             />
-            <TouchableOpacity style={{ width: '25%', paddingHorizontal: 15, paddingVertical: 10, borderRadius: 4, backgroundColor: '#0cc1cf' }}>
+            <TouchableOpacity onPress={() => dispatch(logout())} style={{ width: '25%', paddingHorizontal: 15, paddingVertical: 10, borderRadius: 4, backgroundColor: '#0cc1cf' }}>
                 <Semibold center color="#fff">Search</Semibold>
             </TouchableOpacity>
         </View>

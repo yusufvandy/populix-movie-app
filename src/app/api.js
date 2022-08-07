@@ -4,11 +4,11 @@ import { navigate as RootNavigation } from '../../App'
 import { store } from './store'
 import { logout } from '@features/accountSlicer'
 import { Alert } from 'react-native'
-import { BASE_URL } from "@env"
+import { BASE_URL, V4AUTH } from "@env"
 
 let headers = { 'Content-Type': 'application/json' }
-const token = AsyncStorage.getItem('access_token')
-if (token) headers = { ...headers, 'Authorization': `Bearer ${token}` }
+// const token = AsyncStorage.getItem('access_token')
+if (V4AUTH) headers = { ...headers, 'Authorization': `Bearer ${V4AUTH}` }
 
 const instance = axios.create({ baseUrl: BASE_URL, headers: headers });
 instance.interceptors.response.use(
@@ -35,8 +35,8 @@ export const getApi = async (version, url) => {
 
 export const postApi = async (version, url, payload) => {
     console.log('POST/', BASE_URL + `${version}/` + url);
-    return instance.post(BASE_URL + version + url, payload, { headers })
-    // return axios.post(BASE_URL + url,
+    return instance.post(BASE_URL + `${version}/` + url, payload, { headers })
+    // return axios.post(BASE_URL + version + url,
     //     payload,
     //     { headers }
     // )
