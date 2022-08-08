@@ -53,7 +53,7 @@ export const accountSlicer = createSlice({
             builder.addCase(postRequestToken.rejected, (state, action) => {
                 state.loading = false;
                 state.request_token = null;
-                AsyncStorage.setItem('request_token', null);
+                AsyncStorage.removeItem('request_token');
             }),
             builder.addCase(postAccessToken.pending, state => {
                 state.loading = true;
@@ -69,11 +69,17 @@ export const accountSlicer = createSlice({
                 state.loading = false;
                 state.request_token = null;
                 state.account_id = null;
-                AsyncStorage.setItem('access_token', null);
-                AsyncStorage.setItem('account_id', null);
+                AsyncStorage.removeItem('access_token');
+                AsyncStorage.removeItem('account_id');
             }),
             builder.addCase(logout.fulfilled, state => {
                 state.loading = false;
+                state.request_token = null;
+                state.access_token = null;
+                state.account_id = null;
+                AsyncStorage.removeItem('request_token');
+                AsyncStorage.removeItem('access_token');
+                AsyncStorage.removeItem('account_id');
             })
     },
 });

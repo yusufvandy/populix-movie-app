@@ -22,7 +22,7 @@ const Routes = () => {
   // initiate custom font
   const [appIsReady, setAppIsReady] = React.useState(false);
   const [accessToken, setAccessToken] = React.useState(null);
-  const { request_token } = useSelector(state => state.account);
+  const { request_token, account_id } = useSelector(state => state.account);
 
   // trigger reactive token
   React.useEffect(() => {
@@ -59,7 +59,7 @@ const Routes = () => {
         routeNameRef.current = navigationRef.current.getCurrentRoute().name;
       }}
     >
-      <Stack.Navigator>{renderRoutes(accessToken)}</Stack.Navigator>
+      <Stack.Navigator>{renderRoutes(accessToken, account_id)}</Stack.Navigator>
     </NavigationContainer>
   );
 };

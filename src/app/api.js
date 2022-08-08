@@ -36,6 +36,7 @@ export const getApi = async (version, url) => {
 export const postApi = async (version, url, payload, accessToken) => {
     console.log('POST/', BASE_URL + `${version}/` + url);
     if (accessToken !== undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    if (accessToken === undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${V4AUTH}`;
     return instance.post(BASE_URL + `${version}/` + url, payload,
         { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken !== undefined ? accessToken : V4AUTH}` }
     )

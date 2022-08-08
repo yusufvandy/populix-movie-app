@@ -8,10 +8,10 @@ import { ListForm as LIST_FORM_SCREEN } from '@screens/list/form';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
-export const renderRoutes = (accessToken) => {
+export const renderRoutes = (token, account_id) => {
     return (
         <>
-            <Stack.Screen name="HOME_SCREEN" component={!accessToken ? HOME_SCREEN : Navbar} options={{ headerShown: false, animationEnabled: true }} />
+            <Stack.Screen name="HOME_SCREEN" component={(!account_id && !token) ? HOME_SCREEN : Navbar} options={{ headerShown: false, animationEnabled: true }} />
             <Stack.Screen name="MOVIE_DETAIL_SCREEN" component={MOVIE_DETAIL_SCREEN} options={{ headerShown: false, animationEnabled: true }} />
             <Stack.Screen name="MOVIE_LIST_SCREEN" component={MOVIE_LIST_SCREEN} options={{ headerShown: false, animationEnabled: true }} />
             <Stack.Screen name="LIST_SCREEN" component={LIST_SCREEN} options={{ headerShown: false, animationEnabled: true }} />
