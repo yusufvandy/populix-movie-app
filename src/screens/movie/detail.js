@@ -4,7 +4,8 @@ import { Regular, Semibold, Bold } from '@components/Text';
 import SkeletonMovieDetail from '@components/skeleton/SkeletonMovieDetail';
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMovieDetail, getCredits, getSimilar } from '@features/movieSlicer';
+import { getMovieDetail, getCredits, getSimilar, getAccountStates } from '@features/movieSlicer';
+import { markFavorite, markWatchlist } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
 import { IMG_URL } from "@env"
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,7 +18,7 @@ export const MovieDetail = ({ route, navigation }) => {
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const [token, setToken] = React.useState(null)
-    const { loading, detail, casts, similar } = useSelector(state => state.movie);
+    const { loading, detail, casts, similar, detailAccountState } = useSelector(state => state.movie);
 
     React.useEffect(() => {
         if (isFocused) {
@@ -32,9 +33,40 @@ export const MovieDetail = ({ route, navigation }) => {
         }
     }, [isFocused])
 
+    React.useEffect(() => {
+        if (token) {
+            dispatch(getAccountStates(route.params.id))
+        }
+    }, [token])
+
     // React.useEffect(() => {
     //     console.log("casts ", JSON.stringify(casts, null, 2));
     // }, [casts])
+
+    const ActionButton = () => {
+        const handleAction = (type) => {
+            type === 'favorite' && dispatch(markFavorite({ id: route.params.id, state: !detailAccountState?.favorite })).then(() => dispatch(getAccountStates(route.params.id)))
+            type === 'watchlist' && dispatch(markWatchlist({ id: route.params.id, state: !detailAccountState?.watchlist })).then(() => dispatch(getAccountStates(route.params.id)))
+        }
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -10 }}>
+                <TouchableOpacity onPress={() => handleAction('favorite')} style={{ paddingHorizontal: 12 }}>
+                    {
+                        detailAccountState?.favorite ?
+                            <AntDesign name="heart" size={20} color='red' /> :
+                            <AntDesign name="hearto" size={20} color='#ddd' />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleAction('watchlist')} style={{ paddingHorizontal: 12 }}>
+                    {
+                        detailAccountState?.watchlist ?
+                            <MaterialIcons name="bookmark" color='#0cc1cf' size={24} /> :
+                            <MaterialIcons name="bookmark-outline" color='#ddd' size={24} />
+                    }
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     if (loading) return <View style={{ flex: 1, backgroundColor: '#1f1d2b' }}><SkeletonMovieDetail /></View>
     return (
@@ -57,16 +89,7 @@ export const MovieDetail = ({ route, navigation }) => {
                                 <Semibold size={16}>{detail.vote_average.toFixed(1)}</Semibold>
                                 <Regular size={16} style={{ marginLeft: 4 }}>• {`${Math.trunc(detail.runtime / 60)}h ${detail.runtime % 60}m`}</Regular>
                             </View>
-                            {token &&
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -10 }}>
-                                    <TouchableOpacity style={{ paddingHorizontal: 12 }}>
-                                        <AntDesign name="hearto" size={20} color='#ddd' />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity style={{ paddingHorizontal: 12 }}>
-                                        <MaterialIcons name="bookmark-outline" color='#ddd' size={22} />
-                                    </TouchableOpacity>
-                                </View>
-                            }
+                            {token && detailAccountState && <ActionButton />}
                         </View>
                         <Bold style={{ marginBottom: 6 }} size={24}>{detail.title}</Bold>
                         <Regular>{detail.genres.map((el, i) => <Regular key={i}>{el.name}, </Regular>)} • {moment(detail.release_date).format('DD MMM YYYY')}</Regular>

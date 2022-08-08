@@ -4,7 +4,7 @@ import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
 
 export default SkeletonMovieList = () => {
     return (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 15, paddingHorizontal: 5 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -10 }}>
             <Placeholder Animation={Fade}>
                 <PlaceholderLine style={{ height: 30, margin: 10, marginBottom: 25, backgroundColor: '#444' }} width="60%" />
             </Placeholder>

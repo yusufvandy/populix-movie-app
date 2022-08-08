@@ -5,9 +5,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWatchlist } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
-import SkeletonMovieList from '@components/skeleton/SkeletonMovieList';
+import MovieListComponent from '@components/MovieList';
 
-export const Watchlist = () => {
+export const Watchlist = ({ navigation }) => {
     const win = Dimensions.get('window');
     const { loading, watchlist } = useSelector(state => state.profile);
     const isFocused = useIsFocused();
@@ -19,7 +19,6 @@ export const Watchlist = () => {
         }
     }, [isFocused])
 
-    if (loading) return <View style={{ flex: 1, backgroundColor: '#1f1d2b' }}><SkeletonMovieList /></View>
     if (!watchlist.length) return (
         <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <MaterialIcons name="bookmark-outline" color="#ddd" size={80} />
@@ -29,10 +28,8 @@ export const Watchlist = () => {
     )
 
     return (
-        <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ height: win.height * .3, width: '80%', alignItems: 'center', justifyContent: 'center' }}>
-                <Semibold style={{ fontSize: 18, textAlign: 'center', marginBottom: 5 }}>Favorite Screen</Semibold>
-            </View>
+        <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}>
+            <MovieListComponent navigation={navigation} label="Watchlist Movies" loading={loading} data={watchlist} />
         </View>
     )
 }
