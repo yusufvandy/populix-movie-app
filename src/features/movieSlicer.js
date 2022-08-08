@@ -8,9 +8,11 @@ const initialState = {
     upcoming: [],
     trending: [],
     popular: [],
+    top: [],
     detail: null,
     casts: [],
-    similar: []
+    similar: [],
+    detailAccountState: null
 };
 
 export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
@@ -40,6 +42,14 @@ export const getPopular = createAsyncThunk('MOVIE_GET_POPULAR', async () => {
     }
 });
 
+export const getTopRated = createAsyncThunk('MOVIE_GET_TOPRATED', async () => {
+    try {
+        const res = await getApi(3, `movie/top_rated?api_key=${API_KEY}`);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
 export const getMovieDetail = createAsyncThunk('MOVIE_GET_DETAIL', async (id) => {
     try {
         const res = await getApi(3, `movie/${id}?api_key=${API_KEY}&language=en-US`);
@@ -62,6 +72,15 @@ export const getSimilar = createAsyncThunk('MOVIE_GET_SIMILAR', async (id) => {
     try {
         const res = await getApi(3, `movie/${id}/similar?api_key=${API_KEY}&language=en-US`);
         return res.data.results.slice(0, 6);
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const getAccountStates = createAsyncThunk('MOVIE_GET_ACCOUNT_STATES', async (id) => {
+    try {
+        const res = await getApi(3, `movie/${id}/account_states`);
+        return res.data
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
     }
@@ -109,6 +128,17 @@ export const movieSlicer = createSlice({
                 state.loading = false;
                 state.popular = [];
             }),
+            builder.addCase(getTopRated.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getTopRated.fulfilled, (state, action) => {
+                state.loading = false;
+                state.top = action.payload.results;
+            }),
+            builder.addCase(getTopRated.rejected, (state, action) => {
+                state.loading = false;
+                state.top = [];
+            }),
             builder.addCase(getMovieDetail.pending, state => {
                 state.loading = true;
             }),
@@ -141,6 +171,17 @@ export const movieSlicer = createSlice({
             builder.addCase(getSimilar.rejected, (state, action) => {
                 state.loading = false;
                 state.similar = [];
+            }),
+            builder.addCase(getAccountStates.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getAccountStates.fulfilled, (state, action) => {
+                state.loading = false;
+                state.detailAccountState = action.payload;
+            }),
+            builder.addCase(getAccountStates.rejected, (state, action) => {
+                state.loading = false;
+                state.detailAccountState = [];
             })
     },
 });
