@@ -3,7 +3,7 @@ import { View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Regular, Semibold, Bold } from '@components/Text';
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListDetail } from '@features/profileSlicer';
+import { getListDetail, removeItems } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
 import SkeletonListDetail from '@components/skeleton/SkeletonListDetail';
 import { IMG_URL } from "@env"
@@ -19,6 +19,12 @@ export const ListDetail = ({ route, navigation }) => {
             dispatch(getListDetail({ id: route.params.id }))
         }
     }, [isFocused])
+
+    const handleRemoveItem = (id) => {
+        let form = { items: [{ media_type: 'movie', media_id: id }] }
+        console.log(form)
+        dispatch(removeItems({ id: listDetail.id, form: form })).then(() => dispatch(getListDetail({ id: route.params.id })))
+    }
 
     if (loading) return <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}><SkeletonListDetail /></View >
     return (
@@ -70,7 +76,7 @@ export const ListDetail = ({ route, navigation }) => {
                                             <Regular size={12} style={{ marginHorizontal: 10 }}>•</Regular>
                                             <Regular size={12}>{moment(el.release_date).format('DD MMM YYYY')}</Regular>
                                         </View>
-                                        <TouchableOpacity style={{ marginTop: 25 }}>
+                                        <TouchableOpacity onPress={() => handleRemoveItem(el.id)} style={{ marginTop: 25 }}>
                                             <Regular color="#ff8591" size={12}>Remove</Regular>
                                         </TouchableOpacity>
                                     </View>

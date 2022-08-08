@@ -93,7 +93,27 @@ export const putList = createAsyncThunk('PROFILE_PUT_LIST', async (payload) => {
 export const deleteList = createAsyncThunk('PROFILE_DELETE_LIST', async (payload) => {
     const access_token = await AsyncStorage.getItem('access_token');
     try {
-        const res = await deleteApi(4, `list/${payload.id}`, access_token);
+        const res = await deleteApi(4, `list/${payload.id}`, null, access_token);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const addItems = createAsyncThunk('PROFILE_POST_ITEM_LIST', async (payload) => {
+    const access_token = await AsyncStorage.getItem('access_token');
+    try {
+        const res = await postApi(4, `list/${payload.id}/items`, payload.form, access_token);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const removeItems = createAsyncThunk('PROFILE_DELETE_ITEM_LIST', async (payload) => {
+    const access_token = await AsyncStorage.getItem('access_token');
+    try {
+        const res = await deleteApi(4, `list/${payload.id}/items`, payload.form, access_token);
         return res.data;
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
@@ -196,6 +216,24 @@ export const profileSlicer = createSlice({
                 state.loading = false;
             }),
             builder.addCase(deleteList.rejected, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(addItems.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(addItems.fulfilled, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(addItems.rejected, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(removeItems.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(removeItems.fulfilled, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(removeItems.rejected, (state, action) => {
                 state.loading = false;
             })
     },

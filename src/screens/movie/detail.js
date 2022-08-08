@@ -64,6 +64,9 @@ export const MovieDetail = ({ route, navigation }) => {
                             <MaterialIcons name="bookmark-outline" color='#ddd' size={24} />
                     }
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.push('LIST_SCREEN', { id: route.params.id })} style={{ paddingHorizontal: 12 }}>
+                    <Ionicons name="ios-list" color='#ddd' size={24} />
+                </TouchableOpacity>
             </View>
         )
     }
