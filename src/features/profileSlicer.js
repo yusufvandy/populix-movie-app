@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { postApi, getApi } from '@app/api';
+import { postApi, getApi, putApi, deleteApi } from '@app/api';
 import { API_KEY } from "@env"
 
 const initialState = {
@@ -74,6 +74,26 @@ export const postList = createAsyncThunk('PROFILE_POST_LIST', async (payload) =>
     const access_token = await AsyncStorage.getItem('access_token');
     try {
         const res = await postApi(4, `list`, payload, access_token);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const putList = createAsyncThunk('PROFILE_PUT_LIST', async (payload) => {
+    const access_token = await AsyncStorage.getItem('access_token');
+    try {
+        const res = await putApi(4, `list/${payload.id}`, payload.form, access_token);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const deleteList = createAsyncThunk('PROFILE_DELETE_LIST', async (payload) => {
+    const access_token = await AsyncStorage.getItem('access_token');
+    try {
+        const res = await deleteApi(4, `list/${payload.id}`, access_token);
         return res.data;
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
@@ -158,6 +178,24 @@ export const profileSlicer = createSlice({
                 state.loading = false;
             }),
             builder.addCase(postList.rejected, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(putList.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(putList.fulfilled, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(putList.rejected, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(deleteList.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(deleteList.fulfilled, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(deleteList.rejected, (state, action) => {
                 state.loading = false;
             })
     },

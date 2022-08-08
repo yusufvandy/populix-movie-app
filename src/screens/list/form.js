@@ -3,25 +3,26 @@ import { View, TouchableOpacity, TextInput } from 'react-native';
 import { Regular, Semibold, Bold } from '@components/Text';
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { postList } from '@features/profileSlicer';
+import { postList, putList, deleteList } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
-import SkeletonListDetail from '@components/skeleton/SkeletonListDetail';
-import { IMG_URL } from "@env"
-import moment from 'moment';
 
 export const ListForm = ({ route, navigation }) => {
     const [form, setForm] = React.useState({ name: '', description: '', iso_639_1: 'en' });
-    // const { loading, listDetail } = useSelector(state => state.profile);
-    // const isFocused = useIsFocused();
+    const { loading } = useSelector(state => state.profile);
+    const isFocused = useIsFocused();
     const dispatch = useDispatch();
 
-    // React.useEffect(() => {
-    //     if (isFocused) {
-    //         dispatch(getListDetail({ id: route.params.id }))
-    //     }
-    // }, [isFocused])
+    React.useEffect(() => {
+        if (isFocused) {
+            if (route.params !== undefined) { setForm({ ...form, name: route.params.name, description: route.params.description }) }
+        }
+    }, [isFocused])
 
-    // if (loading) return <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}><SkeletonListDetail /></View >
+    const handleSubmitForm = () => {
+        if (route.params === undefined) return dispatch(postList(form)).then(() => navigation.goBack())
+        dispatch(putList({ form: form, id: route.params.id })).then(() => navigation.goBack())
+    }
+
     return (
         <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 15 }}>
@@ -33,7 +34,7 @@ export const ListForm = ({ route, navigation }) => {
                 </View>
                 {
                     route.params !== undefined &&
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => dispatch(deleteList({ id: route.params.id })).then(() => navigation.navigate('LIST_SCREEN_TAB'))}>
                         <Regular color="#ff8591">Delete List</Regular>
                     </TouchableOpacity>
                 }
@@ -50,7 +51,7 @@ export const ListForm = ({ route, navigation }) => {
                     defaultValue={form.description}
                     onChangeText={val => setForm({ ...form, description: val })}
                     style={{ backgroundColor: '#312e42', textAlignVertical: 'top', height: 100, marginBottom: 30, color: '#ddd', padding: 15, borderRadius: 5 }} />
-                <TouchableOpacity onPress={() => dispatch(postList(form)).then(() => navigation.goBack())} disabled={!form.name} style={{ backgroundColor: form.name ? '#0cc1cf' : '#6d6d7d', alignItems: 'center', padding: 10, borderRadius: 5 }}>
+                <TouchableOpacity onPress={() => handleSubmitForm()} disabled={!form.name || loading} style={{ backgroundColor: form.name || loading ? '#0cc1cf' : '#6d6d7d', alignItems: 'center', padding: 10, borderRadius: 5 }}>
                     <Semibold color="#111">Submit</Semibold>
                 </TouchableOpacity>
             </View>

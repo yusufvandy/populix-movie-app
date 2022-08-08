@@ -57,33 +57,18 @@ export const postUploadApi = async (url, payload) => {
     )
 }
 
-export const putApi = async (url, payload) => {
-    const token = await AsyncStorage.getItem('access_token')
-
-    console.log('PUT/', url);
-
-    return axios.put(BASE_URL + url,
-        payload,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        }
+export const putApi = async (version, url, payload, accessToken) => {
+    console.log('PUT/', BASE_URL + `${version}/` + url);
+    if (accessToken !== undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    return instance.put(BASE_URL + `${version}/` + url, payload,
+        { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken !== undefined ? accessToken : V4AUTH}` }
     )
 }
 
-export const deleteApi = async (url) => {
-    const token = await AsyncStorage.getItem('access_token')
-
-    console.log('DELETE/', url);
-
-    return axios.delete(BASE_URL + url,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        }
+export const deleteApi = async (version, url, accessToken) => {
+    console.log('DELETE/', BASE_URL + `${version}/` + url);
+    if (accessToken !== undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    return instance.delete(BASE_URL + `${version}/` + url,
+        { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken !== undefined ? accessToken : V4AUTH}` }
     )
 }

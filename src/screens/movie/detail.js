@@ -33,8 +33,6 @@ export const MovieDetail = ({ route, navigation }) => {
         }
     }, [isFocused])
 
-    console.log(token)
-
     React.useEffect(() => {
         if (token) {
             dispatch(getAccountStates(route.params.id))

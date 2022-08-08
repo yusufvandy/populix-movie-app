@@ -30,7 +30,7 @@ export const ListDetail = ({ route, navigation }) => {
                     </TouchableOpacity>
                     <Bold size={20}>List Detail</Bold>
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('LIST_FORM_SCREEN', { id: route.params.id, name: listDetail.name, description: listDetail.description })}>
                     <Regular color="#0cc1cf">Edit List</Regular>
                 </TouchableOpacity>
             </View>
@@ -80,6 +80,6 @@ export const ListDetail = ({ route, navigation }) => {
                     </ScrollView>
                     : <Regular center style={{ marginTop: 15 }}>You don't have any movie list.</Regular>
             }
-        </View>
+        </View >
     )
 }
