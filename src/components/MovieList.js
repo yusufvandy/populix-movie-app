@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity, Dimensions, FlatList } from 'react-native';
 import { Regular, Semibold, Bold } from '@components/Text';
 import SkeletonMovieList from '@components/skeleton/SkeletonMovieList';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import { IMG_URL } from "@env"
 
@@ -23,9 +23,15 @@ const renderItem = ({ item }, navigation) => (
     </TouchableOpacity>
 )
 
-export default MovieListComponent = ({ loading, data, label, navigation, withBack }) => {
+export default MovieListComponent = ({ loading, data, label, navigation, withBack, emptyLabel, emptyIcon }) => {
     if (loading) return <SkeletonMovieList />
-    if (!data || !data.length) return null
+    if (!data || !data.length) return (
+        <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <MaterialCommunityIcons name={emptyIcon} color='#ddd' size={80} />
+            <Bold style={{ fontSize: 20, textAlign: 'center', marginBottom: 5, marginTop: 15 }}>{emptyLabel.title}</Bold>
+            <Regular style={{ textAlign: 'center', marginBottom: 5 }}>{emptyLabel.subtitle}</Regular>
+        </View>
+    )
     return (
         <>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>

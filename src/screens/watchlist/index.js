@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import { Regular, Semibold, Bold } from '@components/Text';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWatchlist } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
@@ -19,17 +17,15 @@ export const Watchlist = ({ navigation }) => {
         }
     }, [isFocused])
 
-    if (!watchlist.length) return (
-        <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <MaterialIcons name="bookmark-outline" color="#ddd" size={80} />
-            <Bold style={{ fontSize: 20, textAlign: 'center', marginBottom: 5, marginTop: 15 }}>No Watchlist</Bold>
-            <Regular style={{ textAlign: 'center', marginBottom: 5 }}>Try to add watchlist movie on movie detail.</Regular>
-        </View>
-    )
-
     return (
         <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}>
-            <MovieListComponent navigation={navigation} label="Watchlist Movies" loading={loading} data={watchlist} />
+            <MovieListComponent
+                navigation={navigation}
+                label="Watchlist Movies"
+                emptyIcon="bookmark-outline"
+                emptyLabel={{ title: 'No Watchlist', subtitle: 'Try to add watchlist movie on movie detail.' }}
+                loading={loading}
+                data={watchlist} />
         </View>
     )
 }

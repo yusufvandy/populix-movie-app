@@ -6,6 +6,7 @@ const initialState = {
     loading: true,
     favorites: [],
     watchlist: [],
+    list: []
 };
 
 export const getFavorite = createAsyncThunk('PROFILE_GET_FAVORITE_MOVIE', async () => {
@@ -48,6 +49,16 @@ export const markWatchlist = createAsyncThunk('PROFILE_POST_WATCHLIST_MOVIE', as
     }
 });
 
+export const getList = createAsyncThunk('PROFILE_GET_LIST', async () => {
+    const account_id = await AsyncStorage.getItem('account_id');
+    try {
+        const res = await getApi(4, `account/${account_id}/lists?page=1`);
+        return res.data.results;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
 export const profileSlicer = createSlice({
     name: 'profile',
     initialState,
@@ -66,7 +77,7 @@ export const profileSlicer = createSlice({
             }),
             builder.addCase(getFavorite.rejected, (state, action) => {
                 state.loading = false;
-                state.favorites = null;
+                state.favorites = [];
             }),
             builder.addCase(markFavorite.pending, state => {
                 state.loading = true;
@@ -86,7 +97,7 @@ export const profileSlicer = createSlice({
             }),
             builder.addCase(getWatchlist.rejected, (state, action) => {
                 state.loading = false;
-                state.watchlist = null;
+                state.watchlist = [];
             }),
             builder.addCase(markWatchlist.pending, state => {
                 state.loading = true;
@@ -96,6 +107,17 @@ export const profileSlicer = createSlice({
             }),
             builder.addCase(markWatchlist.rejected, (state, action) => {
                 state.loading = false;
+            }),
+            builder.addCase(getList.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getList.fulfilled, (state, action) => {
+                state.loading = false;
+                state.list = action.payload;
+            }),
+            builder.addCase(getList.rejected, (state, action) => {
+                state.loading = false;
+                state.list = []
             })
     },
 });

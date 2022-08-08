@@ -23,7 +23,7 @@ export const Home = ({ navigation }) => {
     }, [isFocused])
 
     return (
-        <View style={{ flex: 1, paddingHorizontal: 25, paddingVertical: 15, backgroundColor: '#1f1d2b' }}>
+        <View style={{ flex: 1, padding: 15, backgroundColor: '#1f1d2b' }}>
             <ProfileComponent loading={loadingAccount} />
             <SearchComponent loading={loading} />
             <ScrollView showsVerticalScrollIndicator={false}>
