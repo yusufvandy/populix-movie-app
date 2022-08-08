@@ -26,11 +26,22 @@ const renderItem = ({ item }, navigation) => (
 export default MovieListComponent = ({ loading, data, label, navigation, withBack, emptyLabel, emptyIcon }) => {
     if (loading) return <SkeletonMovieList />
     if (!data || !data.length) return (
-        <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <MaterialCommunityIcons name={emptyIcon} color='#ddd' size={80} />
-            <Bold style={{ fontSize: 20, textAlign: 'center', marginBottom: 5, marginTop: 15 }}>{emptyLabel.title}</Bold>
-            <Regular style={{ textAlign: 'center', marginBottom: 5 }}>{emptyLabel.subtitle}</Regular>
-        </View>
+        <>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
+                {
+                    withBack &&
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingRight: 15 }}>
+                        <Ionicons color="white" name={"md-arrow-back-outline"} size={24} />
+                    </TouchableOpacity>
+                }
+                <Bold size={20}>{label}</Bold>
+            </View>
+            <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', marginTop: 50 }}>
+                <MaterialCommunityIcons name={emptyIcon} color='#ddd' size={80} />
+                <Bold style={{ fontSize: 20, textAlign: 'center', marginBottom: 5, marginTop: 15 }}>{emptyLabel.title}</Bold>
+                <Regular style={{ textAlign: 'center', marginBottom: 5 }}>{emptyLabel.subtitle}</Regular>
+            </View>
+        </>
     )
     return (
         <>

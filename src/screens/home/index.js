@@ -25,7 +25,7 @@ export const Home = ({ navigation }) => {
     return (
         <View style={{ flex: 1, padding: 15, backgroundColor: '#1f1d2b' }}>
             <ProfileComponent navigation={navigation} loading={loadingAccount} />
-            <SearchComponent loading={loading} />
+            <SearchComponent navigation={navigation} loading={loading} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <MovieCardComponent navigation={navigation} loading={loading} data={upcoming} label="Upcoming Movies" allData={upcoming} />
                 <MovieCardComponent navigation={navigation} loading={loading} data={popular} label="Popular Movies" allData={popular} />

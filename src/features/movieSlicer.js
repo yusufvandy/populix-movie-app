@@ -5,6 +5,7 @@ import { API_KEY } from "@env"
 
 const initialState = {
     loading: false,
+    search: [],
     upcoming: [],
     trending: [],
     popular: [],
@@ -14,6 +15,15 @@ const initialState = {
     similar: [],
     detailAccountState: null
 };
+
+export const searchMovie = createAsyncThunk('MOVIE_SEARCH', async (payload) => {
+    try {
+        const res = await getApi(3, `search/movie?query=${payload.query}&api_key=${API_KEY}&language=en-US&page=1&include_adult=false`);
+        return res.data.results;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
 
 export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
     try {
@@ -95,9 +105,20 @@ export const movieSlicer = createSlice({
         },
     },
     extraReducers: builder => {
-        builder.addCase(getUpcoming.pending, state => {
+        builder.addCase(searchMovie.pending, state => {
             state.loading = true;
         }),
+            builder.addCase(searchMovie.fulfilled, (state, action) => {
+                state.loading = false;
+                state.search = action.payload;
+            }),
+            builder.addCase(searchMovie.rejected, (state, action) => {
+                state.loading = false;
+                state.search = [];
+            }),
+            builder.addCase(getUpcoming.pending, state => {
+                state.loading = true;
+            }),
             builder.addCase(getUpcoming.fulfilled, (state, action) => {
                 state.loading = false;
                 state.upcoming = action.payload.results;
