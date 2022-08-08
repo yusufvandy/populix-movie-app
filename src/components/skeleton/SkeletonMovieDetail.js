@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
 
-export default SkeletonDetail = () => {
+export default SkeletonMovieDetail = () => {
     return (
         <>
             <Placeholder width='100%' Animation={Fade}>

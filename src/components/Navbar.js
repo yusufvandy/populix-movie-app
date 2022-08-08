@@ -1,23 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Home as HOME_SCREEN } from '@screens/home';
-import { Recommendation as RECOMMENDATION_SCREEN } from '@screens/recommendation';
 import { Favorite as FAVORITE_SCREEN } from '@screens/favorite';
 import { Watchlist as WATCHLIST_SCREEN } from '@screens/watchlist';
-import { Rate as RATE_SCREEN } from '@screens/rate';
+import { List as LIST_SCREEN } from '@screens/list';
 import { Regular } from './Text';
 
 export default Navbar = () => {
     const Tab = createBottomTabNavigator();
-    // const [token, setToken] = React.useState(null)
-
-    // const getToken = async () => {
-    //     const token = await AsyncStorage.getItem('TOKEN')
-    //     setToken(token)
-    // }
-    // getToken()
 
     return (
         <Tab.Navigator
@@ -41,21 +32,12 @@ export default Navbar = () => {
                     ),
                 }} />
             <Tab.Screen
-                name='RECOMMENDATION_SCREEN_TAB'
-                component={RECOMMENDATION_SCREEN}
-                options={{
-                    tabBarLabel: 'Recommendation',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <MaterialCommunityIcons name={focused ? "comment-check" : "comment-check-outline"} color={color} size={size} />
-                    ),
-                }} />
-            <Tab.Screen
                 name='FAVORITE_SCREEN_TAB'
                 component={FAVORITE_SCREEN}
                 options={{
                     tabBarLabel: 'Favorite',
                     tabBarIcon: ({ focused, color, size }) => (
-                        <AntDesign name={focused ? "heart" : "hearto"} color={color} size={size} />
+                        <MaterialCommunityIcons name={focused ? "heart-circle" : "heart-circle-outline"} color={color} size={30} />
                     ),
                 }} />
             <Tab.Screen
@@ -68,12 +50,12 @@ export default Navbar = () => {
                     ),
                 }} />
             <Tab.Screen
-                name='RATE_SCREEN_TAB'
-                component={RATE_SCREEN}
+                name='LIST_SCREEN_TAB'
+                component={LIST_SCREEN}
                 options={{
                     tabBarLabel: 'Rate',
                     tabBarIcon: ({ focused, color, size }) => (
-                        <AntDesign name={focused ? "star" : "staro"} color={color} size={size} />
+                        <Ionicons name={focused ? "ios-list" : "ios-list"} color={color} size={size} />
                     ),
                 }} />
         </Tab.Navigator>
