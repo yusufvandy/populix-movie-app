@@ -7,17 +7,17 @@ import { Alert } from 'react-native'
 import { BASE_URL, V4AUTH } from "@env"
 
 let headers = { 'Content-Type': 'application/json' }
-// const token = AsyncStorage.getItem('access_token')
 if (V4AUTH) headers = { ...headers, 'Authorization': `Bearer ${V4AUTH}` }
 
-const instance = axios.create({ baseUrl: BASE_URL, headers: headers });
+const instance = axios.create({ baseUrl: BASE_URL });
 instance.interceptors.response.use(
     response => response,
     error => {
+        console.log(error.response)
         if (error.response.status === 401 || error.response.status === 403) {
             Alert.alert(
                 'Session Expired',
-                'Please login to continue',
+                'Your token has expired. Please login to continue',
                 [
                     { text: 'OK', onPress: () => (store.dispatch(logout()), RootNavigation('HOME_SCREEN')) },
                 ],
@@ -33,13 +33,12 @@ export const getApi = async (version, url) => {
     return instance.get(BASE_URL + `${version}/` + url, { headers })
 }
 
-export const postApi = async (version, url, payload) => {
+export const postApi = async (version, url, payload, accessToken) => {
     console.log('POST/', BASE_URL + `${version}/` + url);
-    return instance.post(BASE_URL + `${version}/` + url, payload, { headers })
-    // return axios.post(BASE_URL + version + url,
-    //     payload,
-    //     { headers }
-    // )
+    if (accessToken !== undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    return instance.post(BASE_URL + `${version}/` + url, payload,
+        { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken !== undefined ? accessToken : V4AUTH}` }
+    )
 }
 
 export const postUploadApi = async (url, payload) => {

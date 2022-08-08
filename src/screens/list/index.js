@@ -33,7 +33,7 @@ export const List = ({ navigation }) => {
         <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 15 }}>
                 <Bold size={20}>Your Movie List</Bold>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('LIST_FORM_SCREEN')}>
                     <Regular color="#0cc1cf">Add List</Regular>
                 </TouchableOpacity>
             </View>
@@ -63,6 +63,6 @@ export const List = ({ navigation }) => {
                     ))
                 }
             </ScrollView>
-        </View>
+        </View >
     )
 }

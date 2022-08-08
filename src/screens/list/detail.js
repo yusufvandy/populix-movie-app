@@ -34,45 +34,52 @@ export const ListDetail = ({ route, navigation }) => {
                     <Regular color="#0cc1cf">Edit List</Regular>
                 </TouchableOpacity>
             </View>
-            <View style={{ marginBottom: 25 }}>
-                <Bold size={20} style={{ marginBottom: 5, textTransform: 'capitalize' }}>{listDetail.name}</Bold>
-                <Regular style={{ marginBottom: 20 }}>{listDetail.description}</Regular>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <View style={{ alignItems: 'center' }}>
-                        <Bold color="#ddd" size={20}>{listDetail.results.length}</Bold>
-                        <Regular color="#777" size={12}>Item on list</Regular>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <Bold color="#ddd" size={20}>{listDetail.average_rating.toFixed(2)}%</Bold>
-                        <Regular color="#777" size={12}>Average Ratings</Regular>
-                    </View>
-                    <View style={{ alignItems: 'center' }}>
-                        <Regular color="#ddd" size={20}>{`${Math.trunc(listDetail.runtime / 60)}h ${listDetail.runtime % 60}m`}</Regular>
-                        <Regular color="#777" size={12}>Total Runtime</Regular>
+            {
+                listDetail &&
+                <View style={{ marginBottom: 25 }}>
+                    <Bold size={20} style={{ marginBottom: 5, textTransform: 'capitalize' }}>{listDetail.name}</Bold>
+                    <Regular style={{ marginBottom: 20 }}>{listDetail?.description}</Regular>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ alignItems: 'center' }}>
+                            <Bold color="#ddd" size={20}>{listDetail.results.length}</Bold>
+                            <Regular color="#777" size={12}>Item on list</Regular>
+                        </View>
+                        <View style={{ alignItems: 'center' }}>
+                            <Bold color="#ddd" size={20}>{listDetail.average_rating.toFixed(2)}%</Bold>
+                            <Regular color="#777" size={12}>Average Ratings</Regular>
+                        </View>
+                        <View style={{ alignItems: 'center' }}>
+                            <Regular color="#ddd" size={20}>{`${Math.trunc(listDetail.runtime / 60)}h ${listDetail.runtime % 60}m`}</Regular>
+                            <Regular color="#777" size={12}>Total Runtime</Regular>
+                        </View>
                     </View>
                 </View>
-            </View>
-            <ScrollView>
-                {
-                    listDetail.results.length && listDetail.results.map(el => (
-                        <View key={el.id} style={{ marginBottom: 15, flexDirection: 'row' }}>
-                            <Image style={{ width: 70, borderRadius: 5, height: 100, marginRight: 15 }} source={{ uri: `${IMG_URL}${el.poster_path}` }} />
-                            <View>
-                                <Bold size={18}>{el.title ? el.title : el.name}</Bold>
-                                <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-                                    <AntDesign name="star" color="#f9bd2a" size={10} style={{ marginRight: 5 }} />
-                                    <Regular size={12}>{el.vote_average.toFixed(1)}</Regular>
-                                    <Regular size={12} style={{ marginHorizontal: 10 }}>•</Regular>
-                                    <Regular size={12}>{moment(el.release_date).format('DD MMM YYYY')}</Regular>
+            }
+            {
+                listDetail && listDetail.results.length ?
+                    <ScrollView>
+                        {
+                            listDetail.results.map(el => (
+                                <View key={el.id} style={{ marginBottom: 15, flexDirection: 'row' }}>
+                                    <Image style={{ width: 70, borderRadius: 5, height: 100, marginRight: 15 }} source={{ uri: `${IMG_URL}${el.poster_path}` }} />
+                                    <View>
+                                        <Bold size={18}>{el.title ? el.title : el.name}</Bold>
+                                        <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
+                                            <AntDesign name="star" color="#f9bd2a" size={10} style={{ marginRight: 5 }} />
+                                            <Regular size={12}>{el.vote_average.toFixed(1)}</Regular>
+                                            <Regular size={12} style={{ marginHorizontal: 10 }}>•</Regular>
+                                            <Regular size={12}>{moment(el.release_date).format('DD MMM YYYY')}</Regular>
+                                        </View>
+                                        <TouchableOpacity style={{ marginTop: 25 }}>
+                                            <Regular color="#ff8591" size={12}>Remove</Regular>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
-                                <TouchableOpacity style={{ marginTop: 25 }}>
-                                    <Regular color="#ff8591" size={12}>Remove</Regular>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    ))
-                }
-            </ScrollView>
+                            ))
+                        }
+                    </ScrollView>
+                    : <Regular center style={{ marginTop: 15 }}>You don't have any movie list.</Regular>
+            }
         </View>
     )
 }

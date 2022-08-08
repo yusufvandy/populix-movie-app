@@ -70,6 +70,16 @@ export const getListDetail = createAsyncThunk('PROFILE_GET_LIST_DETAIL', async (
     }
 });
 
+export const postList = createAsyncThunk('PROFILE_POST_LIST', async (payload) => {
+    const access_token = await AsyncStorage.getItem('access_token');
+    try {
+        const res = await postApi(4, `list`, payload, access_token);
+        return res.data;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
 export const profileSlicer = createSlice({
     name: 'profile',
     initialState,
@@ -140,6 +150,15 @@ export const profileSlicer = createSlice({
             builder.addCase(getListDetail.rejected, (state, action) => {
                 state.loading = false;
                 state.listDetail = []
+            }),
+            builder.addCase(postList.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(postList.fulfilled, (state, action) => {
+                state.loading = false;
+            }),
+            builder.addCase(postList.rejected, (state, action) => {
+                state.loading = false;
             })
     },
 });
