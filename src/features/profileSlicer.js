@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { postApi, getApi } from '@app/api';
+import { API_KEY } from "@env"
 
 const initialState = {
     loading: true,
     favorites: [],
     watchlist: [],
-    list: []
+    list: [],
+    listDetail: null
 };
 
 export const getFavorite = createAsyncThunk('PROFILE_GET_FAVORITE_MOVIE', async () => {
@@ -54,6 +56,15 @@ export const getList = createAsyncThunk('PROFILE_GET_LIST', async () => {
     try {
         const res = await getApi(4, `account/${account_id}/lists?page=1`);
         return res.data.results;
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const getListDetail = createAsyncThunk('PROFILE_GET_LIST_DETAIL', async (payload) => {
+    try {
+        const res = await getApi(4, `list/${payload.id}?page=1&api_key=${API_KEY}`);
+        return res.data;
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
     }
@@ -118,6 +129,17 @@ export const profileSlicer = createSlice({
             builder.addCase(getList.rejected, (state, action) => {
                 state.loading = false;
                 state.list = []
+            }),
+            builder.addCase(getListDetail.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getListDetail.fulfilled, (state, action) => {
+                state.loading = false;
+                state.listDetail = action.payload;
+            }),
+            builder.addCase(getListDetail.rejected, (state, action) => {
+                state.loading = false;
+                state.listDetail = []
             })
     },
 });

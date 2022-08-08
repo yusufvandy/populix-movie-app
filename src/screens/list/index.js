@@ -18,8 +18,6 @@ export const List = ({ navigation }) => {
         }
     }, [isFocused])
 
-    console.log(list)
-
     if (loading) return <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}><SkeletonList /></View >
     if (!list || !list.length) return (
         <View style={{ backgroundColor: "#1f1d2b", flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -42,7 +40,9 @@ export const List = ({ navigation }) => {
             <ScrollView>
                 {
                     list.map(el => (
-                        <TouchableOpacity style={{ backgroundColor: '#312e42', padding: 10, marginBottom: 15, paddingHorizontal: 15, borderRadius: 5 }} key={el.id}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('LIST_DETAIL_SCREEN', { id: el.id })}
+                            style={{ backgroundColor: '#312e42', padding: 10, marginBottom: 15, paddingHorizontal: 15, borderRadius: 5 }} key={el.id}>
                             <Bold size={20} style={{ marginBottom: 5, textTransform: 'capitalize' }}>{el.name}</Bold>
                             <Regular style={{ marginBottom: 20 }}>{el.description}</Regular>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -55,7 +55,7 @@ export const List = ({ navigation }) => {
                                     <Regular color="#777" size={12}>Average Ratings</Regular>
                                 </View>
                                 <View style={{ alignItems: 'center' }}>
-                                    <Semibold color="#ddd" size={20}>{`${Math.trunc(el.runtime / 60)}h ${el.runtime % 60}m`}</Semibold>
+                                    <Regular color="#ddd" size={20}>{`${Math.trunc(el.runtime / 60)}h ${el.runtime % 60}m`}</Regular>
                                     <Regular color="#777" size={12}>Total Runtime</Regular>
                                 </View>
                             </View>
