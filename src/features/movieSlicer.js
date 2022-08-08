@@ -9,7 +9,8 @@ const initialState = {
     trending: [],
     popular: [],
     detail: null,
-    casts: []
+    casts: [],
+    similar: []
 };
 
 export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
@@ -23,7 +24,7 @@ export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
 
 export const getTrending = createAsyncThunk('MOVIE_GET_TRENDING', async () => {
     try {
-        const res = await getApi(3, `trending/all/day?api_key=${API_KEY}`);
+        const res = await getApi(3, `trending/movie/day?api_key=${API_KEY}`);
         return res.data;
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
@@ -52,6 +53,15 @@ export const getCredits = createAsyncThunk('MOVIE_GET_CREDITS', async (id) => {
     try {
         const res = await getApi(3, `movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
         return res.data.cast.slice(0, 10);
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
+export const getSimilar = createAsyncThunk('MOVIE_GET_SIMILAR', async (id) => {
+    try {
+        const res = await getApi(3, `movie/${id}/similar?api_key=${API_KEY}&language=en-US`);
+        return res.data.results.slice(0, 6);
     } catch (error) {
         throw error?.response?.data?.detail || error?.message;
     }
@@ -120,6 +130,17 @@ export const movieSlicer = createSlice({
             builder.addCase(getCredits.rejected, (state, action) => {
                 state.loading = false;
                 state.casts = [];
+            }),
+            builder.addCase(getSimilar.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getSimilar.fulfilled, (state, action) => {
+                state.loading = false;
+                state.similar = action.payload;
+            }),
+            builder.addCase(getSimilar.rejected, (state, action) => {
+                state.loading = false;
+                state.similar = [];
             })
     },
 });

@@ -29,10 +29,10 @@ export const Home = ({ navigation }) => {
             <ProfileComponent loading={loadingAccount} />
             <SearchComponent loading={loadingMovie} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={upcoming} label="Upcoming Movies" screenUrl="" />
-                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={popularMovies} label="Popular Movies" screenUrl="" />
-                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={trending} label="Trending Today" screenUrl="" />
-                <MovieCardComponent navigation={navigation} loading={loadingTV} data={popularTV} label="Popular TV" screenUrl="" />
+                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={upcoming} label="Upcoming Movies" viewAllUrl="" />
+                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={popularMovies} label="Popular Movies" viewAllUrl="" />
+                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={trending} label="Trending Today" viewAllUrl="" />
+                <MovieCardComponent navigation={navigation} loading={loadingTV} data={popularTV} label="Popular TV" viewAllUrl="" />
                 <View style={{ height: 50 }} />
             </ScrollView>
         </View>
