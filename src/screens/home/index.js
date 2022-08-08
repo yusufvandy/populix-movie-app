@@ -22,7 +22,7 @@ export const Home = ({ navigation }) => {
             dispatch(getPopularMovie())
             dispatch(getPopularTv())
         }
-    }, [])
+    }, [isFocused])
 
     return (
         <View style={{ flex: 1, paddingHorizontal: 25, paddingVertical: 15, backgroundColor: '#1f1d2b' }}>
@@ -30,8 +30,8 @@ export const Home = ({ navigation }) => {
             <SearchComponent loading={loadingMovie} />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <MovieCardComponent navigation={navigation} loading={loadingMovie} data={upcoming} label="Upcoming Movies" screenUrl="" />
-                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={trending} label="Trending Today" screenUrl="" />
                 <MovieCardComponent navigation={navigation} loading={loadingMovie} data={popularMovies} label="Popular Movies" screenUrl="" />
+                <MovieCardComponent navigation={navigation} loading={loadingMovie} data={trending} label="Trending Today" screenUrl="" />
                 <MovieCardComponent navigation={navigation} loading={loadingTV} data={popularTV} label="Popular TV" screenUrl="" />
                 <View style={{ height: 50 }} />
             </ScrollView>

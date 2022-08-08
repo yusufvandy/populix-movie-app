@@ -8,7 +8,8 @@ const initialState = {
     upcoming: [],
     trending: [],
     popular: [],
-    detail: null
+    detail: null,
+    casts: []
 };
 
 export const getUpcoming = createAsyncThunk('MOVIE_GET_UPCOMING', async () => {
@@ -47,6 +48,15 @@ export const getMovieDetail = createAsyncThunk('MOVIE_GET_DETAIL', async (id) =>
     }
 });
 
+export const getCredits = createAsyncThunk('MOVIE_GET_CREDITS', async (id) => {
+    try {
+        const res = await getApi(3, `movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
+        return res.data.cast.slice(0, 10);
+    } catch (error) {
+        throw error?.response?.data?.detail || error?.message;
+    }
+});
+
 export const movieSlicer = createSlice({
     name: 'movie',
     initialState,
@@ -65,7 +75,7 @@ export const movieSlicer = createSlice({
             }),
             builder.addCase(getUpcoming.rejected, (state, action) => {
                 state.loading = false;
-                state.upcoming = null;
+                state.upcoming = [];
             }),
             builder.addCase(getTrending.pending, state => {
                 state.loading = true;
@@ -76,7 +86,7 @@ export const movieSlicer = createSlice({
             }),
             builder.addCase(getTrending.rejected, (state, action) => {
                 state.loading = false;
-                state.trending = null;
+                state.trending = [];
             }),
             builder.addCase(getPopular.pending, state => {
                 state.loading = true;
@@ -87,7 +97,7 @@ export const movieSlicer = createSlice({
             }),
             builder.addCase(getPopular.rejected, (state, action) => {
                 state.loading = false;
-                state.popular = null;
+                state.popular = [];
             }),
             builder.addCase(getMovieDetail.pending, state => {
                 state.loading = true;
@@ -98,7 +108,18 @@ export const movieSlicer = createSlice({
             }),
             builder.addCase(getMovieDetail.rejected, (state, action) => {
                 state.loading = false;
-                state.popular = null;
+                state.detail = null;
+            }),
+            builder.addCase(getCredits.pending, state => {
+                state.loading = true;
+            }),
+            builder.addCase(getCredits.fulfilled, (state, action) => {
+                state.loading = false;
+                state.casts = action.payload;
+            }),
+            builder.addCase(getCredits.rejected, (state, action) => {
+                state.loading = false;
+                state.casts = [];
             })
     },
 });
