@@ -45,7 +45,7 @@ const renderItem = ({ item }, navigation) => (
     </TouchableOpacity>
 )
 
-export default MovieCardComponent = ({ loading, data, label, navigation, labelSmall, viewAllUrl }) => {
+export default MovieCardComponent = ({ loading, data, label, navigation, labelSmall, allData }) => {
     if (loading) return <Skeleton />
     if (!data || !data.length) return null
     return (
@@ -53,8 +53,9 @@ export default MovieCardComponent = ({ loading, data, label, navigation, labelSm
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <Bold size={labelSmall ? 18 : 20}>{label}</Bold>
                 {
-                    viewAllUrl !== '' &&
-                    <TouchableOpacity>
+                    allData &&
+                    <TouchableOpacity onPress={() => navigation.push('MOVIE_LIST_SCREEN', { data: allData, label: label, withBack: true })}
+                    >
                         <Regular color="#0cc1cf">View All</Regular>
                     </TouchableOpacity>
                 }

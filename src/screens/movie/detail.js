@@ -9,7 +9,7 @@ import { markFavorite, markWatchlist } from '@features/profileSlicer';
 import { useIsFocused } from '@react-navigation/native';
 import { IMG_URL } from "@env"
 import { LinearGradient } from 'expo-linear-gradient';
-import MovieCardComponent from '@components/home/MovieCard'
+import MovieCardComponent from '@components/MovieCard'
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
