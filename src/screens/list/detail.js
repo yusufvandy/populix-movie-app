@@ -22,8 +22,7 @@ export const ListDetail = ({ route, navigation }) => {
 
     const handleRemoveItem = (id) => {
         let form = { items: [{ media_type: 'movie', media_id: id }] }
-        console.log(form)
-        dispatch(removeItems({ id: listDetail.id, form: form })).then(() => dispatch(getListDetail({ id: route.params.id })))
+        dispatch(removeItems({ id: route.params.id, form: form })).then(() => dispatch(getListDetail({ id: route.params.id })))
     }
 
     if (loading) return <View style={{ backgroundColor: "#1f1d2b", flex: 1, padding: 15 }}><SkeletonListDetail /></View >

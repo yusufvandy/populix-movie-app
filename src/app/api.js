@@ -68,7 +68,7 @@ export const putApi = async (version, url, payload, accessToken) => {
 export const deleteApi = async (version, url, payload, accessToken) => {
     console.log('DELETE/', BASE_URL + `${version}/` + url);
     if (accessToken !== undefined) instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    return instance.delete(BASE_URL + `${version}/` + url, payload,
+    return instance.delete(BASE_URL + `${version}/` + url, { data: payload },
         { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken !== undefined ? accessToken : V4AUTH}` }
     )
 }
