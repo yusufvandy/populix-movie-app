@@ -19,7 +19,9 @@ IMG_URL=https://image.tmdb.org/t/p/w500
 ## Running App
 
 * Install [Expo Go](https://expo.dev/client) on your iOS or Android phone and connect to the same wireless network as your computer.
+* Copy `.env` file to the project directory.
 * `npm install -g expo-cli`
+* `npm install`
 * `cd ios && npx pod-install`
 * `cd .. && expo start`
 * Scan appeared barcode on terminal using iOS camera or scan barcode inside Expo Go for Android.
