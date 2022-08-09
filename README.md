@@ -6,7 +6,7 @@ This application purposed for technical interview test at [Populix](https://info
 
 ## Usage
 
-The application required `.env` to run. I attached the required `.env` file to Populix test email.
+The application required `.env` and my TMDB credentials to run. I attached the required `.env` file and TMDB credentials to Populix test email.
 
 **.env**
 ```dosini
