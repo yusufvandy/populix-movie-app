@@ -40,6 +40,10 @@ export const accountSlicer = createSlice({
         setLoading(state, action) {
             state.loading = action.payload;
         },
+        removeRequestToken(state, action) {
+            state.request_token = null;
+            AsyncStorage.removeItem('request_token');
+        },
     },
     extraReducers: builder => {
         builder.addCase(postRequestToken.pending, state => {
@@ -84,5 +88,5 @@ export const accountSlicer = createSlice({
     },
 });
 
-export const { setLoading } = accountSlicer.actions;
+export const { setLoading, removeRequestToken } = accountSlicer.actions;
 export default accountSlicer.reducer;

@@ -5,7 +5,7 @@ import { Placeholder, PlaceholderLine, Fade } from "rn-placeholder";
 import { WebView } from 'react-native-webview';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { postRequestToken, postAccessToken, setLoading, logout } from '@features/accountSlicer';
+import { postRequestToken, postAccessToken, setLoading, removeRequestToken, logout } from '@features/accountSlicer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const win = Dimensions.get('window');
@@ -35,11 +35,13 @@ const VerificationView = ({ handleClose, handleSuccessApprove, request_token }) 
             <WebView
                 onNavigationStateChange={(e) => {
                     //  condition if approve success
-                    if (e.navigationType === undefined && e.url === 'https://www.themoviedb.org/') {
+                    if (e.url === 'https://www.themoviedb.org/') {
                         handleSuccessApprove()
                     }
+                    if (e.title === 'Invalid Request Token — The Movie Database (TMDB)') dispatch(removeRequestToken())
                 }}
                 incognito={true}
+                cacheEnabled={false}
                 source={{ uri: `https://www.themoviedb.org/auth/access?request_token=${request_token}` }}
             />
         }
