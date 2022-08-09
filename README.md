@@ -20,7 +20,7 @@ IMG_URL=https://image.tmdb.org/t/p/w500
 
 * Install [Expo Go](https://expo.dev/client) on your iOS or Android phone and connect to the same wireless network as your computer.
 * Copy `.env` file to the project directory.
-* `npm install -g expo-cli`
+* `sudo npm install -g expo-cli`
 * `npm install`
 * `cd ios && npx pod-install`
 * `cd .. && expo start`
